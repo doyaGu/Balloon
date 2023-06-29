@@ -1,0 +1,21 @@
+[submodule "deps/minhook"]
+	path = deps/minhook
+	url = https://github.com/TsudaKageyu/minhook
+[submodule "deps/yyjson"]
+	path = deps/yyjson
+	url = https://github.com/ibireme/yyjson
+[submodule "deps/backward-cpp"]
+	path = deps/backward-cpp
+	url = https://github.com/bombela/backward-cpp.git
+[submodule "deps/physfs"]
+	path = deps/physfs
+	url = https://github.com/icculus/physfs.git
+[submodule "deps/sv"]
+	path = deps/sv
+	url = https://github.com/uael/sv
+[submodule "deps/utf8.h"]
+	path = deps/utf8.h
+	url = https://github.com/sheredom/utf8.h
+[submodule "deps/itoa"]
+	path = deps/itoa
+	url = https://github.com/jeaiii/itoa.git
