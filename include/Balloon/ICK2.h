@@ -137,7 +137,6 @@ namespace balloon {
             virtual CKBaseManager *GetInactiveManager(int index) const = 0;
 
             virtual CKPluginManager *GetPluginManager() const = 0;
-            virtual CKObjectManager *GetObjectManager() const = 0;
             virtual CKParameterManager *GetParameterManager() const = 0;
             virtual CKAttributeManager *GetAttributeManager() const = 0;
             virtual CKTimeManager *GetTimeManager() const = 0;
@@ -197,8 +196,6 @@ namespace balloon {
             virtual CKERROR Save(const char *filename, CKObjectArray *liste, CKDWORD saveFlags, CKDependencies *dependencies = nullptr, CKGUID *readerGuid = nullptr) = 0;
 
             virtual void SetAutomaticLoadMode(CK_LOADMODE generalMode, CK_LOADMODE _3dObjectsMode, CK_LOADMODE meshMode, CK_LOADMODE matTexturesMode) = 0;
-            virtual void SetUserLoadCallback(CK_USERLOADCALLBACK callback, void *arg) = 0;
-            virtual CK_LOADMODE LoadVerifyObjectUnicity(const char *oldName, CK_CLASSID cid, const char *newName, CKObject **newObj) = 0;
 
             virtual bool IsInLoad() = 0;
             virtual bool IsInSave() = 0;
@@ -270,9 +267,6 @@ namespace balloon {
             virtual char *UnPackData(int destSize, char *srcBuffer, int srcSize) = 0;
 
             // Memory Management Utilities
-            virtual void *Malloc(unsigned int n) = 0;
-            virtual void Free(void *ptr) = 0;
-
             virtual void *MallocAligned(int size, int align) = 0;
             virtual void FreeAligned(void *ptr) = 0;
 
@@ -282,7 +276,6 @@ namespace balloon {
             virtual char *Strlwr(const char *str) = 0;
 
             // Utils
-            virtual char *GetStringBuffer(int size) = 0;
             virtual CKGUID GetSecureGuid() = 0;
             virtual CKDWORD GetStartOptions() = 0;
             virtual WIN_HANDLE GetMainWindow() = 0;

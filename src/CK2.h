@@ -81,7 +81,6 @@ namespace balloon {
         int GetInactiveManagerCount() const override;
         CKBaseManager *GetInactiveManager(int index) const override;
         CKPluginManager *GetPluginManager() const override;
-        CKObjectManager *GetObjectManager() const override;
         CKParameterManager *GetParameterManager() const override;
         CKAttributeManager *GetAttributeManager() const override;
         CKTimeManager *GetTimeManager() const override;
@@ -131,8 +130,6 @@ namespace balloon {
         CKERROR Save(const char *filename, CKObjectArray *liste, CKDWORD saveFlags, CKDependencies *dependencies, CKGUID *readerGuid) override;
 
         void SetAutomaticLoadMode(CK_LOADMODE generalMode, CK_LOADMODE _3dObjectsMode, CK_LOADMODE meshMode, CK_LOADMODE matTexturesMode) override;
-        void SetUserLoadCallback(CK_USERLOADCALLBACK callback, void *arg) override;
-        CK_LOADMODE LoadVerifyObjectUnicity(const char *oldName, CK_CLASSID cid, const char *newName, CKObject **newObj) override;
 
         bool IsInLoad() override;
         bool IsInSave() override;
@@ -191,8 +188,6 @@ namespace balloon {
         char *PackData(const char *Data, int size, int &newSize, int compressionLevel) override;
         char *UnPackData(int destSize, char *srcBuffer, int srcSize) override;
 
-        void *Malloc(unsigned int n) override;
-        void Free(void *ptr) override;
         void *MallocAligned(int size, int align) override;
         void FreeAligned(void *ptr) override;
 
@@ -200,7 +195,6 @@ namespace balloon {
         char *Strupr(const char *str) override;
         char *Strlwr(const char *str) override;
 
-        char *GetStringBuffer(int size) override;
         CKGUID GetSecureGuid() override;
         CKDWORD GetStartOptions() override;
         WIN_HANDLE GetMainWindow() override;

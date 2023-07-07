@@ -293,11 +293,6 @@ CKPluginManager *CK2::GetPluginManager() const {
     return CKGetPluginManager();
 }
 
-CKObjectManager *CK2::GetObjectManager() const {
-    assert(m_CKContext != nullptr);
-    return (CKObjectManager *) m_CKContext->GetManagerByGuid(OBJECT_MANAGER_GUID);
-}
-
 CKParameterManager *CK2::GetParameterManager() const {
     assert(m_CKContext != nullptr);
     return m_CKContext->GetParameterManager();
@@ -475,16 +470,6 @@ CKERROR CK2::Save(const char *filename, CKObjectArray *liste, CKDWORD saveFlags,
 void CK2::SetAutomaticLoadMode(CK_LOADMODE generalMode, CK_LOADMODE _3dObjectsMode, CK_LOADMODE meshMode, CK_LOADMODE matTexturesMode) {
     assert(m_CKContext != nullptr);
     m_CKContext->SetAutomaticLoadMode(generalMode, _3dObjectsMode, meshMode, matTexturesMode);
-}
-
-void CK2::SetUserLoadCallback(CK_USERLOADCALLBACK callback, void *arg) {
-    assert(m_CKContext != nullptr);
-    m_CKContext->SetUserLoadCallback(callback, arg);
-}
-
-CK_LOADMODE CK2::LoadVerifyObjectUnicity(const char *oldName, CK_CLASSID cid, const char *newName, CKObject **newObj) {
-    assert(m_CKContext != nullptr);
-    return m_CKContext->LoadVerifyObjectUnicity(const_cast<CKSTRING>(oldName), cid, const_cast<CKSTRING>(newName), newObj);
 }
 
 bool CK2::IsInLoad() {
@@ -670,14 +655,6 @@ char *CK2::UnPackData(int destSize, char *srcBuffer, int srcSize) {
     return ::CKUnPackData(destSize, srcBuffer, srcSize);
 }
 
-void *CK2::Malloc(unsigned int n) {
-    return ::mynew(n);
-}
-
-void CK2::Free(void *ptr) {
-    return ::mydelete(ptr);
-}
-
 void *CK2::MallocAligned(int size, int align) {
     return ::VxNewAligned(size, align);
 }
@@ -696,11 +673,6 @@ char *CK2::Strupr(const char *str) {
 
 char *CK2::Strlwr(const char *str) {
     return ::CKStrlwr(const_cast<CKSTRING>(str));
-}
-
-char *CK2::GetStringBuffer(int size) {
-    assert(m_CKContext != nullptr);
-    return m_CKContext->GetStringBuffer(size);
 }
 
 CKGUID CK2::GetSecureGuid() {
@@ -752,20 +724,20 @@ CKERROR CK2::OutputToConsole(const char *str, bool beep) {
 CKERROR CK2::OutputToConsoleEx(const char *format, ...) {
     assert(m_CKContext != nullptr);
     va_list args;
-        va_start(args, format);
-    char *buf = m_CKContext->GetStringBuffer(256);
-    vsprintf(buf, format, args);
-        va_end(args);
+    va_start(args, format);
+    char buf[256];
+    vsnprintf(buf, 256, format, args);
+    va_end(args);
     return OutputToConsole(buf, false);
 }
 
 CKERROR CK2::OutputToConsoleExBeep(const char *format, ...) {
     assert(m_CKContext != nullptr);
     va_list args;
-        va_start(args, format);
-    char *buf = m_CKContext->GetStringBuffer(256);
-    vsprintf(buf, format, args);
-        va_end(args);
+    va_start(args, format);
+    char buf[256];
+    vsnprintf(buf, 256, format, args);
+    va_end(args);
     return OutputToConsole(buf, true);
 }
 
