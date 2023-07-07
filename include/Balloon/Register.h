@@ -1,3 +1,8 @@
+/**
+ * @file Register.h
+ * @brief Register mod
+ * @warning This header should only be included once
+ */
 #ifndef BALLOON_REGISTER_H
 #define BALLOON_REGISTER_H
 
