@@ -26,13 +26,13 @@ namespace balloon {
         public:
             virtual HookError CreateHook(void *target, void *detour, void **originalPtr) = 0;
             virtual HookError CreateHookApi(const char *modulePath, const char *procName, void *detour, void **originalPtr, void **targetPtr) = 0;
-            virtual HookError RemoveHook(void *target) =0;
+            virtual HookError RemoveHook(void *target) = 0;
 
-            virtual HookError EnableHook(void *target) =0;
-            virtual HookError DisableHook(void *target) =0;
+            virtual HookError EnableHook(void *target) = 0;
+            virtual HookError DisableHook(void *target) = 0;
 
-            virtual HookError QueueEnableHook(void *target) =0;
-            virtual HookError QueueDisableHook(void *target) =0;
+            virtual HookError QueueEnableHook(void *target) = 0;
+            virtual HookError QueueDisableHook(void *target) = 0;
             virtual HookError ApplyQueued() = 0;
         };
     }
