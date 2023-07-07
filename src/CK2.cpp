@@ -691,11 +691,11 @@ char *CK2::Strdup(const char *str) {
 }
 
 char *CK2::Strupr(const char *str) {
-    return ::CKStrdup(const_cast<CKSTRING>(str));
+    return ::CKStrupr(const_cast<CKSTRING>(str));
 }
 
 char *CK2::Strlwr(const char *str) {
-    return ::CKStrdup(const_cast<CKSTRING>(str));
+    return ::CKStrlwr(const_cast<CKSTRING>(str));
 }
 
 char *CK2::GetStringBuffer(int size) {
