@@ -239,7 +239,7 @@ bool Balloon::ConnectMods() {
             m_ModsOnUpdate.push_back(ptr);
 
         if ((mod->GetFlags() & MOD_HAS_ONLATEUPDATE) != 0)
-            m_ModsOnUpdate.push_back(ptr);
+            m_ModsOnLateUpdate.push_back(ptr);
 
         return 1;
     });
