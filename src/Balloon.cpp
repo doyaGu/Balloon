@@ -7,7 +7,6 @@
 #include "FileSystem.h"
 #include "DataShare.h"
 #include "EventManager.h"
-#include "Hook.h"
 #include "DataStack.h"
 #include "WeakRefFlag.h"
 #include "StringUtils.h"
@@ -37,11 +36,6 @@ bool Balloon::Init() {
         return false;
 
     InitLogger();
-
-    if (!Hook::GetInstance().Init()) {
-        LOG_ERROR("Failed to initialize hook api.");
-        return false;
-    }
 
     LOG_INFO("Initializing Mod Loader...");
 
@@ -80,10 +74,6 @@ void Balloon::Shutdown() {
         fs.SetWriteDir(nullptr);
         m_Config->Release();
         m_Config = nullptr;
-
-        if (!Hook::GetInstance().Shutdown()) {
-            LOG_ERROR("Failed to shutdown hook api.");
-        }
 
         ShutdownLogger();
         ShutdownFileSystem();
@@ -564,7 +554,6 @@ void Balloon::RegisterBuiltinInterfaces() {
     m_Context->RegisterInterface(&FileSystem::GetInstance(), "fs", 1);
     m_Context->RegisterInterface(&DataShare::GetInstance(), "ds", 1);
     m_Context->RegisterInterface(&EventManager::GetInstance(), "em", 1);
-    m_Context->RegisterInterface(&Hook::GetInstance(), "hook", 1);
 }
 
 void Balloon::RegisterBuiltinFactories() {

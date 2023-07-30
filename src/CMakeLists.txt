@@ -51,7 +51,6 @@ set(BALLOON_PRIVATE_HEADERS
         DataShare.h
         DataStack.h
         FileSystem.h
-        Hook.h
         Logger.h
         Config.h
 
@@ -91,7 +90,6 @@ set(BALLOON_SOURCES
         DataShare.cpp
         DataStack.cpp
         FileSystem.cpp
-        Hook.cpp
         Logger.cpp
         Config.cpp
 
@@ -114,7 +112,6 @@ target_include_directories(Balloon PUBLIC
 target_link_libraries(Balloon
         PRIVATE
         physfs-static
-        minhook
         yyjson
         sv
         utf8

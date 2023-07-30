@@ -10,7 +10,6 @@
 #include "Balloon/IFileSystem.h"
 #include "Balloon/IDataShare.h"
 #include "Balloon/IEventManager.h"
-#include "Balloon/IHook.h"
 #include "Balloon/IDataStack.h"
 #include "Balloon/IWeakRefFlag.h"
 #include "Balloon/ILogger.h"
@@ -44,10 +43,6 @@ namespace balloon {
 
             IEventManager *GetEventManager() const {
                 return static_cast<IEventManager *>(GetInterface("em", nullptr, 1));
-            }
-
-            IHook *GetHook() const {
-                return static_cast<IHook *>(GetInterface("hook", nullptr, 1));
             }
 
             // Object Factory
