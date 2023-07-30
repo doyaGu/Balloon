@@ -56,6 +56,7 @@ set(BALLOON_PRIVATE_HEADERS
         Config.h
 
         Variant.h
+        SemanticVersion.h
 
         PathUtils.h
         )
