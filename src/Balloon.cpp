@@ -4,7 +4,6 @@
 
 #include "Logger.h"
 #include "Config.h"
-#include "CK2.h"
 #include "FileSystem.h"
 #include "DataShare.h"
 #include "EventManager.h"
@@ -546,7 +545,6 @@ bool Balloon::SaveModConfig(const std::shared_ptr<ModContainer> &mod) {
 }
 
 void Balloon::RegisterBuiltinInterfaces() {
-    m_Context->RegisterInterface(&CK2::GetInstance(), "ck", 1);
     m_Context->RegisterInterface(&FileSystem::GetInstance(), "fs", 1);
     m_Context->RegisterInterface(&DataShare::GetInstance(), "ds", 1);
     m_Context->RegisterInterface(&EventManager::GetInstance(), "em", 1);
@@ -590,9 +588,6 @@ static int OnQuery(HookModuleQueryCode code, void *data1, void *data2) {
 
 static int OnPost(HookModulePostCode code, void *data1, void *data2) {
     switch (code) {
-        case HMPC_CKCONTEXT:
-            CK2::GetInstance().Init(reinterpret_cast<CKContext *>(data2));
-            break;
         case HMPC_WINDOW:
             Balloon::GetInstance().SetWindowHandle(reinterpret_cast<HWND>(data2));
             break;
@@ -613,19 +608,20 @@ static int OnUnload(size_t code, void * /* handle */) {
     return HMR_OK;
 }
 
-CKERROR PostProcess(void *arg) {
+long PostProcess(void *arg) {
     Balloon::GetInstance().OnProcess();
-    return CK_OK;
+
+    return 0;
 }
 
-CKERROR PreClearAll(void *arg) {
+long PreClearAll(void *arg) {
     auto &balloon = Balloon::GetInstance();
     balloon.DisconnectMods();
 
-    return CK_OK;
+    return 0;
 }
 
-CKERROR OnCKInit(void *arg) {
+long OnCKInit(void *arg) {
     auto &balloon = Balloon::GetInstance();
 
     if (!balloon.LoadMods()) {
@@ -635,23 +631,24 @@ CKERROR OnCKInit(void *arg) {
     if (!balloon.InitMods()) {
         LOG_ERROR("Failed to init mods!");
     }
-    return CK_OK;
+
+    return 0;
 }
 
-CKERROR OnCKEnd(void *arg) {
+long OnCKEnd(void *arg) {
     auto &balloon = Balloon::GetInstance();
     balloon.ShutdownMods();
     balloon.UnloadMods();
 
-    CK2::GetInstance().Shutdown();
-    return CK_OK;
+    return 0;
 }
 
-CKERROR OnCKPostReset(void *arg) {
+long OnCKPostReset(void *arg) {
     if (!Balloon::GetInstance().ConnectMods()) {
         LOG_ERROR("Error occurred during connecting mods!");
     }
-    return CK_OK;
+
+    return 0;
 }
 
 static int OnSet(size_t code, void **pcb, void **parg) {

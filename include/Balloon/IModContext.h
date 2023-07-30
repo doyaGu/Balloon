@@ -7,7 +7,6 @@
 
 #include "Balloon/IObjectFactory.h"
 #include "Balloon/IModContainer.h"
-#include "Balloon/ICK2.h"
 #include "Balloon/IFileSystem.h"
 #include "Balloon/IDataShare.h"
 #include "Balloon/IEventManager.h"
@@ -34,10 +33,6 @@ namespace balloon {
             virtual bool RegisterInterface(void *interface, const char *name, const char *owner, int version) = 0;
             virtual bool HasInterface(const char *id) const = 0;
             virtual void *GetInterface(const char *name, const char *owner, int version) const = 0;
-
-            ICK2 *GetCK2() const {
-                return static_cast<ICK2 *>(GetInterface("ck", nullptr, 1));
-            }
 
             IFileSystem *GetFileSystem() const {
                 return static_cast<IFileSystem *>(GetInterface("fs", nullptr, 1));

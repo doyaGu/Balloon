@@ -48,7 +48,6 @@ set(BALLOON_PRIVATE_HEADERS
 
         WeakRefFlag.h
 
-        CK2.h
         DataShare.h
         DataStack.h
         FileSystem.h
@@ -88,7 +87,6 @@ set(BALLOON_SOURCES
 
         WeakRefFlag.cpp
 
-        CK2.cpp
         DataShare.cpp
         DataStack.cpp
         FileSystem.cpp
@@ -113,8 +111,6 @@ target_include_directories(Balloon PUBLIC
         )
 
 target_link_libraries(Balloon
-        PUBLIC
-        CK2 VxMath
         PRIVATE
         physfs-static
         minhook

@@ -10,9 +10,6 @@
 #endif
 #include <Windows.h>
 
-#include "CKContext.h"
-#include "CKRenderContext.h"
-
 #include "ModLoader.h"
 #include "ModContext.h"
 #include "ModRegistry.h"
