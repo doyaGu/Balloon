@@ -73,6 +73,7 @@ namespace balloon {
             bool IsLoggerInited() const { return (m_Flag & BALLOON_LOGGER_INITED) != 0; }
             void InitLogger();
             void ShutdownLogger();
+            void CreateLogFile(ILogger *logger);
 
             bool LoadConfig(IConfig *config, const std::string &path);
             bool SaveConfig(IConfig *config, const std::string &path);
@@ -86,7 +87,7 @@ namespace balloon {
             int m_Flag = 0;
             HMODULE m_DllHandle = nullptr;
             HWND m_WindowHandle = nullptr;
-            FILE *m_LogFile = nullptr;
+            std::vector<FILE *> m_LogFiles;
             IConfig *m_Config = nullptr;
 
             std::shared_ptr<ModRegistry> m_Registry;

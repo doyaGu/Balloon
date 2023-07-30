@@ -23,6 +23,7 @@ namespace balloon {
         } LogLevel;
 
         typedef struct LogInfo {
+            ILogger *self;
             va_list ap;
             const char *format;
             struct tm *time;
@@ -30,7 +31,7 @@ namespace balloon {
             LogLevel level;
         } LogInfo;
 
-        typedef void (*LogCallback)(const ILogger *logger, LogInfo *info);
+        typedef void (*LogCallback)(LogInfo *info);
         typedef void (*LogLockFunction)(bool lock, void *userdata);
 
         /**

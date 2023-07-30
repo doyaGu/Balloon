@@ -157,6 +157,10 @@ bool Balloon::InitMods() {
             return -1;
         }
 
+        auto logger = Logger::Get(mod->GetId());
+        if (logger)
+            CreateLogFile(logger);
+
         LoadModConfig(mod);
 
         m_Context->SetCurrentMod(mod);
@@ -373,23 +377,7 @@ void Balloon::InitLogger() {
 
     auto logger = Logger::Create("Balloon");
     Logger::RegisterDefaultLogger(logger);
-
-    auto &fs = FileSystem::GetInstance();
-
-    std::string logFile = fs.GetDir(FS_DIR_LOADER);
-    logFile += "\\logs\\Balloon.log";
-
-    m_LogFile = fopen(logFile.c_str(), "a");
-    if (m_LogFile) {
-        logger->AddCallback([](const ILogger *self, LogInfo *info) {
-            char buf[64];
-            buf[strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", info->time)] = '\0';
-            fprintf((FILE *) info->userdata, "[%s] [%s/%s]: ", buf, self->GetId(), self->GetLevelString(info->level));
-            vfprintf((FILE *) info->userdata, info->format, info->ap);
-            fprintf((FILE *) info->userdata, "\n");
-            fflush((FILE *) info->userdata);
-        }, m_LogFile, LOG_LEVEL_TRACE);
-    }
+    CreateLogFile(logger);
 
 #ifdef _DEBUG
     AllocConsole();
@@ -406,12 +394,40 @@ void Balloon::ShutdownLogger() {
     auto logger = Logger::Get("Balloon");
     logger->ClearCallbacks();
 
-    if (m_LogFile) {
-        fclose(m_LogFile);
-        m_LogFile = nullptr;
-    }
+    for (auto it = m_LogFiles.rbegin(); it != m_LogFiles.rend(); ++it)
+        if (*it) {
+            fclose(*it);
+            *it = nullptr;
+        }
+    m_LogFiles.clear();
 
     m_Flag &= ~BALLOON_LOGGER_INITED;
+}
+
+void Balloon::CreateLogFile(ILogger *logger) {
+    if (!logger)
+        return;
+
+    auto &fs = FileSystem::GetInstance();
+
+    std::string logFile = fs.GetDir(FS_DIR_LOADER);
+    logFile += "\\logs\\";
+    logFile += logger->GetId();
+    logFile += ".log";
+
+    FILE *fp = fopen(logFile.c_str(), "w");
+    if (fp) {
+        logger->AddCallback([](LogInfo *info) {
+            char buf[64];
+            buf[strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", info->time)] = '\0';
+            fprintf((FILE *) info->userdata, "[%s] [%s/%s]: ", buf, info->self->GetId(), info->self->GetLevelString(info->level));
+            vfprintf((FILE *) info->userdata, info->format, info->ap);
+            fprintf((FILE *) info->userdata, "\n");
+            fflush((FILE *) info->userdata);
+        }, fp, LOG_LEVEL_TRACE);
+
+        m_LogFiles.push_back(fp);
+    }
 }
 
 bool Balloon::LoadConfig(IConfig *config, const std::string &path) {

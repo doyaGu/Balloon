@@ -8,12 +8,12 @@ static const char *g_LevelStrings[6] = {
     "TRACE", "DEBUG", "INFO", "WARN", "ERROR", "FATAL"
 };
 
-static void StdoutCallback(const ILogger *self, LogInfo *info) {
+static void StdoutCallback(LogInfo *info) {
     char buf[16];
     buf[strftime(buf, sizeof(buf), "%H:%M:%S", info->time)] = '\0';
 
     FILE *fp = (FILE *) info->userdata;
-    fprintf(fp, "[%s] [%s/%s]: ", buf, self->GetId(), g_LevelStrings[info->level]);
+    fprintf(fp, "[%s] [%s/%s]: ", buf, info->self->GetId(), g_LevelStrings[info->level]);
 
     vfprintf(fp, info->format, info->ap);
     fprintf(fp, "\n");
@@ -95,19 +95,19 @@ bool Logger::AddCallback(LogCallback callback, void *userdata, LogLevel level) {
 }
 
 void Logger::Log(LogLevel level, const char *format, va_list args) {
-    LogInfo info = {args, format, nullptr, nullptr, level};
+    LogInfo info = {this, args, format, nullptr, nullptr, level};
 
     Lock();
 
     if (level >= m_Level && level < LOG_LEVEL_OFF) {
         InitLogInfo(&info, stdout);
-        StdoutCallback(this, &info);
+        StdoutCallback(&info);
     }
 
     for (auto it = m_Callbacks.begin(); it != m_Callbacks.end() && it->callback; it++) {
         if (level >= it->level && level < LOG_LEVEL_OFF) {
             InitLogInfo(&info, it->userdata);
-            it->callback(this, &info);
+            it->callback(&info);
         }
     }
 
