@@ -228,20 +228,20 @@ namespace balloon {
         Variant& operator=(Variant &&rhs) noexcept;
 
         bool operator==(const Variant &rhs) const;
-        bool operator==(bool value) const { return IsBool() ? (GetSubtype() == VAR_SUBTYPE_TRUE) == value : false; }
-        bool operator==(char value) const { return IsChar() ? m_Value.c == value : false; }
-        bool operator==(uint8_t value) const { return IsUint8() ? m_Value.u8 == value : false; }
-        bool operator==(int8_t value) const { return IsInt8() ? m_Value.i8 == value : false; }
-        bool operator==(uint16_t value) const { return IsUint16() ? m_Value.u16 == value : false; }
-        bool operator==(int16_t value) const { return IsInt16() ? m_Value.i16 == value : false; }
-        bool operator==(uint32_t value) const { return IsUint32() ? m_Value.u32 == value : false; }
-        bool operator==(int32_t value) const { return IsInt32() ? m_Value.i32 == value : false; }
-        bool operator==(uint64_t value) const { return IsUint64() ? m_Value.u64 == value : false; }
-        bool operator==(int64_t value) const { return IsInt64() ? m_Value.i64 == value : false; }
-        bool operator==(float value) const { return IsFloat32() ? m_Value.f32 == value : false; }
-        bool operator==(double value) const { return IsFloat64() ? m_Value.f64 == value : false; }
-        bool operator==(const char *value) const { return IsString() ? strncmp(m_Value.str, value, m_Size) == 0 : false; }
-        bool operator==(void *value) const { return IsPtr() ? m_Value.ptr == value : false; }
+        bool operator==(bool value) const { return IsBool() && (GetSubtype() == VAR_SUBTYPE_TRUE) == value; }
+        bool operator==(char value) const { return IsChar() && m_Value.c == value; }
+        bool operator==(uint8_t value) const { return IsUint8() && m_Value.u8 == value; }
+        bool operator==(int8_t value) const { return IsInt8() && m_Value.i8 == value; }
+        bool operator==(uint16_t value) const { return IsUint16() && m_Value.u16 == value; }
+        bool operator==(int16_t value) const { return IsInt16() && m_Value.i16 == value; }
+        bool operator==(uint32_t value) const { return IsUint32() && m_Value.u32 == value; }
+        bool operator==(int32_t value) const { return IsInt32() && m_Value.i32 == value; }
+        bool operator==(uint64_t value) const { return IsUint64() && m_Value.u64 == value; }
+        bool operator==(int64_t value) const { return IsInt64() && m_Value.i64 == value; }
+        bool operator==(float value) const { return IsFloat32() && m_Value.f32 == value; }
+        bool operator==(double value) const { return IsFloat64() && m_Value.f64 == value; }
+        bool operator==(const char *value) const { return IsString() && strncmp(m_Value.str, value, m_Size) == 0; }
+        bool operator==(void *value) const { return IsPtr() && m_Value.ptr == value; }
 
         bool operator!=(const Variant &rhs) const { return !(*this == rhs); }
         bool operator!=(bool value) const { return !(*this == value); }
