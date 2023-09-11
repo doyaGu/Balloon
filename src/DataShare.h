@@ -32,13 +32,6 @@ namespace balloon {
         void *SetUserData(void *data, size_t type) override;
 
     private:
-        static bool ValidateKey(const char *key);
-
-        bool AddCallbacks(const char *key, DataShareCallback callback, void *userdata) const;
-        void TriggerCallbacks(const char *key, void *data) const;
-
-        DataShare();
-
         struct Callback {
             DataShareCallback callback;
             void *userdata;
@@ -53,6 +46,13 @@ namespace balloon {
                 return !(rhs == *this);
             }
         };
+
+        DataShare();
+
+        bool AddCallbacks(const char *key, DataShareCallback callback, void *userdata) const;
+        void TriggerCallbacks(const char *key, void *data) const;
+
+        static bool ValidateKey(const char *key);
 
         mutable std::mutex m_RWLock;
         std::unordered_map<std::string, void *> m_DataMap;

@@ -88,13 +88,7 @@ void *DataShare::SetUserData(void *data, size_t type) {
     return m_UserData.SetData(data, type);
 }
 
-bool DataShare::ValidateKey(const char *key) {
-    if (!key || strlen(key) == 0)
-        return false;
-//    if (strchr(key, ':') == nullptr)
-//        return false;
-    return true;
-}
+DataShare::DataShare() = default;
 
 bool DataShare::AddCallbacks(const char *key, DataShareCallback callback, void *userdata) const {
     auto it = m_CallbackMap.find(key);
@@ -113,4 +107,8 @@ void DataShare::TriggerCallbacks(const char *key, void *data) const {
     }
 }
 
-DataShare::DataShare() = default;
+bool DataShare::ValidateKey(const char *key) {
+    if (!key || strlen(key) == 0)
+        return false;
+    return true;
+}
