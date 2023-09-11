@@ -39,14 +39,14 @@ namespace balloon {
         bool SendEvent(EventType type) override;
         bool SendEvent(const char *name) override;
 
-        bool AddListener(const char *eventName, IEventListener *listener) override;
         bool AddListener(EventType eventType, IEventListener *listener) override;
+        bool AddListener(const char *eventName, IEventListener *listener) override;
 
-        bool RemoveListener(const char *eventName, IEventListener *listener) override;
         bool RemoveListener(EventType eventType, IEventListener *listener) override;
+        bool RemoveListener(const char *eventName, IEventListener *listener) override;
 
-        bool RemoveAllListeners(const char *eventName);
         bool RemoveAllListeners(EventType eventType);
+        bool RemoveAllListeners(const char *eventName);
 
     private:
         EventManager();

@@ -147,6 +147,17 @@ bool EventManager::SendEvent(const char *name) {
     return SendEvent(GetEventType(name));
 }
 
+bool EventManager::AddListener(EventType eventType, IEventListener *listener) {
+    if (eventType >= m_EventTypes.size() || !listener)
+        return false;
+
+    if (m_EventStatus[eventType])
+        return false;
+
+    m_EventListeners[eventType].push_back(listener);
+    return true;
+}
+
 bool EventManager::AddListener(const char *eventName, IEventListener *listener) {
     if (!eventName || !listener)
         return false;
@@ -162,14 +173,15 @@ bool EventManager::AddListener(const char *eventName, IEventListener *listener) 
     return true;
 }
 
-bool EventManager::AddListener(EventType eventType, IEventListener *listener) {
+bool EventManager::RemoveListener(EventType eventType, IEventListener *listener) {
     if (eventType >= m_EventTypes.size() || !listener)
         return false;
 
     if (m_EventStatus[eventType])
         return false;
 
-    m_EventListeners[eventType].push_back(listener);
+    auto &listeners = m_EventListeners[eventType];
+    listeners.erase(std::remove(listeners.begin(), listeners.end(), listener), listeners.end());
     return true;
 }
 
@@ -189,15 +201,14 @@ bool EventManager::RemoveListener(const char *eventName, IEventListener *listene
     return true;
 }
 
-bool EventManager::RemoveListener(EventType eventType, IEventListener *listener) {
-    if (eventType >= m_EventTypes.size() || !listener)
+bool EventManager::RemoveAllListeners(EventType eventType) {
+    if (eventType >= m_EventTypes.size())
         return false;
 
     if (m_EventStatus[eventType])
         return false;
 
-    auto &listeners = m_EventListeners[eventType];
-    listeners.erase(std::remove(listeners.begin(), listeners.end(), listener), listeners.end());
+    m_EventListeners[eventType].clear();
     return true;
 }
 
@@ -213,17 +224,6 @@ bool EventManager::RemoveAllListeners(const char *eventName) {
         return false;
 
     m_EventListeners[type].clear();
-    return true;
-}
-
-bool EventManager::RemoveAllListeners(EventType eventType) {
-    if (eventType >= m_EventTypes.size())
-        return false;
-
-    if (m_EventStatus[eventType])
-        return false;
-
-    m_EventListeners[eventType].clear();
     return true;
 }
 
