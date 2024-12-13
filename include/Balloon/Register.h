@@ -6,6 +6,8 @@
 #ifndef BALLOON_REGISTER_H
 #define BALLOON_REGISTER_H
 
+#include <type_traits>
+
 #include "Balloon/ModInfo.h"
 
 extern "C" __declspec(dllexport) void GetModInfo(

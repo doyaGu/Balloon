@@ -16,13 +16,14 @@ namespace balloon {
          * @brief All flags for mod
          */
         typedef enum ModFlags {
-            MOD_HAS_ONUPDATE = 0x00000001, /**< Mod has OnUpdate() */
-            MOD_HAS_ONLATEUPDATE = 0x00000002, /**< Mod has OnLateUpdate() */
+            MOD_HAS_ONUPDATE = 0x00000001,      /**< Mod has OnUpdate() */
+            MOD_HAS_ONLATEUPDATE = 0x00000002,  /**< Mod has OnLateUpdate() */
+            MOD_HAS_ONGUI = 0x00000004,         /**< Mod has OnGUI() */
 
             // Internal Flags
-            MOD_FIXED = 0x00010000, /**< Mod can not be removed */
-            MOD_INITIALIZED = 0x00020000, /**< Mod has been initialized */
-            MOD_CONNECTED = 0x00040000, /**< Mod is connected to game */
+            MOD_FIXED = 0x00010000,             /**< Mod can not be removed */
+            MOD_INITIALIZED = 0x00020000,       /**< Mod has been initialized */
+            MOD_CONNECTED = 0x00040000,         /**< Mod is connected to game */
 
             MOD_LOGGER_RETRIEVED = 0x00100000, /**< Mod logger has been retrieved */
             MOD_CONFIG_RETRIEVED = 0x00200000, /**< Mod config has been retrieved */
@@ -92,6 +93,14 @@ namespace balloon {
              * This method is optional. If required, mod should set flag MOD_HAS_ONLATEUPDATE in Init().
              */
             virtual void OnLateUpdate() {}
+
+            /**
+             * @brief Render mod gui every game loop
+             * @note
+             * This method will be called in each game loop.
+             * This method is optional. If required, mod should set flag MOD_HAS_ONGUI in Init().
+             */
+            virtual void OnGUI() {}
         };
     }
 }

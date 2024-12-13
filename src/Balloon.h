@@ -55,6 +55,7 @@ namespace balloon {
             void DisconnectMods();
 
             void OnProcess();
+            void OnGUI();
 
             ModContext &GetContext() const { return *m_Context; }
 
@@ -96,6 +97,7 @@ namespace balloon {
 
             std::vector<IMod *> m_ModsOnUpdate;
             std::vector<IMod *> m_ModsOnLateUpdate;
+            std::vector<IMod *> m_ModsOnGUI;
         };
 }
 

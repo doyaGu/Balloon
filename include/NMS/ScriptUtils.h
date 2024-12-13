@@ -473,8 +473,7 @@ namespace nms {
         return param;
     }
 
-    template<>
-    CKParameterLocal *CreateLocalParameter<CKObject *>(CKBehavior *script, const char *name, CKObject *value, CKGUID type) {
+    CKParameterLocal *CreateLocalParameterObject(CKBehavior *script, const char *name, CKObject *value, CKGUID type) {
         return CreateLocalParameter(script, name, CKOBJID(value), type);
     }
 
@@ -510,8 +509,7 @@ namespace nms {
         return param;
     }
 
-    template<>
-    CKParameterLocal *GenerateInputParameter<CKObject *>(CKBehavior *script, CKBehavior *beh, int inPos, CKObject *value) {
+    CKParameterLocal *GenerateInputParameterObject(CKBehavior *script, CKBehavior *beh, int inPos, CKObject *value) {
         return GenerateInputParameter(script, beh, inPos, CKOBJID(value));
     }
 
@@ -547,8 +545,7 @@ namespace nms {
         return param;
     }
 
-    template<>
-    CKParameterLocal *GenerateTargetParameter<CKObject *>(CKBehavior *script, CKBehavior *beh, CKObject *value) {
+    CKParameterLocal *GenerateTargetParameterObject(CKBehavior *script, CKBehavior *beh, CKObject *value) {
         return GenerateTargetParameter(script, beh, CKOBJID(value));
     }
 

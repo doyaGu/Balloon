@@ -234,6 +234,9 @@ bool Balloon::ConnectMods() {
         if ((mod->GetFlags() & MOD_HAS_ONLATEUPDATE) != 0)
             m_ModsOnLateUpdate.push_back(ptr);
 
+        if ((mod->GetFlags() & MOD_HAS_ONGUI) != 0)
+            m_ModsOnGUI.push_back(ptr);
+
         return 1;
     });
 
@@ -259,6 +262,9 @@ void Balloon::DisconnectMods() {
         if ((mod->GetFlags() & MOD_HAS_ONLATEUPDATE) != 0)
             m_ModsOnLateUpdate.erase(std::remove(m_ModsOnLateUpdate.begin(), m_ModsOnLateUpdate.end(), ptr), m_ModsOnLateUpdate.end());
 
+        if ((mod->GetFlags() & MOD_HAS_ONGUI) != 0)
+            m_ModsOnGUI.erase(std::remove(m_ModsOnGUI.begin(), m_ModsOnGUI.end(), ptr), m_ModsOnGUI.end());
+
         m_Context->SetCurrentMod(mod);
         ptr->Disconnect();
         m_Context->SetCurrentMod(nullptr);
@@ -277,6 +283,12 @@ void Balloon::OnProcess() {
 
     for (auto *mod: m_ModsOnLateUpdate) {
         mod->OnLateUpdate();
+    }
+}
+
+void Balloon::OnGUI() {
+    for (auto *mod: m_ModsOnGUI) {
+        mod->OnGUI();
     }
 }
 
@@ -448,7 +460,7 @@ bool Balloon::LoadConfig(IConfig *config, const std::string &path) {
         delete[] json;
         fs.Close(file);
         return false;
-    };
+    }
     json[len] = '\0';
     fs.Close(file);
 
@@ -483,13 +495,13 @@ bool Balloon::SaveConfig(IConfig *config, const std::string &path) {
 
     if (fs.WriteBytes(file, json, len) != len) {
         LOG_WARN("Failed to write json to %s.", path.c_str());
-        config->Free(json);
         fs.Close(file);
+        config->Free(json);
         return false;
     }
 
-    config->Free(json);
     fs.Close(file);
+    config->Free(json);
     return true;
 }
 

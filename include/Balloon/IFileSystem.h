@@ -43,19 +43,19 @@ namespace balloon {
         } FileSystemErrorCode;
 
         typedef enum FileType {
-            FS_FILE_REGULAR, /**< a normal file */
-            FS_FILE_DIRECTORY, /**< a directory */
-            FS_FILE_SYMLINK, /**< a symlink */
-            FS_FILE_OTHER /**< something completely different like a device */
+            FS_FILE_REGULAR,     /**< a normal file */
+            FS_FILE_DIRECTORY,   /**< a directory */
+            FS_FILE_SYMLINK,     /**< a symlink */
+            FS_FILE_OTHER        /**< something completely different like a device */
         } FileType;
 
         typedef enum DirectoryType {
-            FS_DIR_BASE = 0, /**< Base directory in platform-dependent notation. */
-            FS_DIR_WORKING = 1, /**< Current working directory in platform-dependent notation. */
-            FS_DIR_USER = 2, /**< User directory in platform-dependent notation. */
-            FS_DIR_APPDATA = 3, /**< AppData directory in platform-dependent notation. */
-            FS_DIR_GAME = 4, /**< Game root directory in platform-dependent notation. */
-            FS_DIR_LOADER = 5, /**< Loader root directory in platform-dependent notation. */
+            FS_DIR_BASE = 0,       /**< Base directory in platform-dependent notation. */
+            FS_DIR_WORKING = 1,    /**< Current working directory in platform-dependent notation. */
+            FS_DIR_USER = 2,       /**< User directory in platform-dependent notation. */
+            FS_DIR_APPDATA = 3,    /**< AppData directory in platform-dependent notation. */
+            FS_DIR_GAME = 4,       /**< Game root directory in platform-dependent notation. */
+            FS_DIR_LOADER = 5,     /**< Loader root directory in platform-dependent notation. */
         } DirectoryType;
 
         typedef enum FileSystemEnumerateCallbackResult {
@@ -86,12 +86,12 @@ namespace balloon {
         };
 
         struct StatInfo {
-            int64_t filesize; /**< size in bytes, -1 for non-files and unknown */
-            int64_t modtime;  /**< last modification time */
-            int64_t createtime; /**< like modtime, but for file creation time */
-            int64_t accesstime; /**< like modtime, but for file access time */
-            FileType filetype; /**< File? Directory? Symlink? */
-            int readonly; /**< non-zero if read only, zero if writable. */
+            int64_t filesize;     /**< size in bytes, -1 for non-files and unknown */
+            int64_t modtime;      /**< last modification time */
+            int64_t createtime;   /**< like modtime, but for file creation time */
+            int64_t accesstime;   /**< like modtime, but for file access time */
+            FileType filetype;    /**< File? Directory? Symlink? */
+            int readonly;         /**< non-zero if read only, zero if writable. */
         };
 
         typedef void (*StringCallback)(void *, const char *);

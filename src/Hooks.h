@@ -1,6 +1,11 @@
 #ifndef HOOKS_H
 #define HOOKS_H
 
+#define HOOKS_MAJOR_VER 0
+#define HOOKS_MINOR_VER 2
+#define HOOKS_PATCH_VER 0
+#define HOOKS_VERSION "0.2.0"
+
 #if (defined(_MSC_VER) || defined(__MINGW32__))
 #define HOOKS_EXPORT extern "C" __declspec(dllexport)
 #else
@@ -11,7 +16,7 @@
 extern "C" {
 #endif
 
-#include "stdint.h"
+#include <stdint.h>
 
 #define HOOKS_ABI_VERSION 1
 
@@ -40,7 +45,6 @@ typedef enum HookModuleReturn {
 } HookModuleReturn;
 
 typedef enum HookModuleErrorCode {
-    HMEC_SYSTEM = 0,
     HMEC_USER = 0x100,
 } HookModuleErrorCode;
 
@@ -54,8 +58,11 @@ typedef enum HookModuleQueryCode {
 } HookModuleQueryCode;
 
 typedef enum HookModulePostCode {
+    HMPC_API = 0x10,
+
     HMPC_CK2 = 0x20,
     HMPC_MSGHOOK = 0x21,
+
     HMPC_CKCONTEXT = 0x40,
     HMPC_WINDOW = 0x41,
 } HookModulePostCode;
@@ -153,6 +160,38 @@ typedef enum MessageHookFunctionsIndex {
     MHFI_KEYBOARD_LL = 45,
     MHFI_MOUSE_LL = 46,
 } MessageHookFunctionsIndex;
+
+typedef enum HookApiIndex {
+    HAI_HOOK = 0,
+} HookApiIndex;
+
+typedef enum HookApiErrorCode {
+    HAEC_OK = 0,
+    HAEC_ALREADY_CREATED,
+    HAEC_NOT_CREATED,
+    HAEC_ENABLED,
+    HAEC_DISABLED,
+    HAEC_NOT_EXECUTABLE,
+    HAEC_UNSUPPORTED_FUNCTION,
+    HAEC_MEMORY_ALLOC,
+    HAEC_MEMORY_PROTECT,
+    HAEC_MODULE_NOT_FOUND,
+    HAEC_FUNCTION_NOT_FOUND,
+    HAEC_UNKNOWN = -1,
+} HookApiErrorCode;
+
+typedef struct HookApi {
+    HookApiErrorCode (*CreateHook)(void *target, void *detour, void **originalPtr);
+    HookApiErrorCode (*CreateHookApi)(const char *modulePath, const char *procName, void *detour, void **originalPtr, void **targetPtr);
+    HookApiErrorCode (*RemoveHook)(void *target);
+
+    HookApiErrorCode (*EnableHook)(void *target);
+    HookApiErrorCode (*DisableHook)(void *target);
+
+    HookApiErrorCode (*QueueEnableHook)(void *target);
+    HookApiErrorCode (*QueueDisableHook)(void *target);
+    HookApiErrorCode (*ApplyQueued)();
+} HookApi;
 
 #ifdef __cplusplus
 }

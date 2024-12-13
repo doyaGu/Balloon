@@ -9,8 +9,16 @@
 #include <vector>
 
 namespace balloon {
+    /**
+     * @brief A container for storing user data.
+     */
     class DataBox {
     public:
+        /**
+         * @brief Retrieves the data associated with the specified type.
+         * @param type The type of the data to retrieve.
+         * @return A pointer to the data of the specified type, or nullptr if not found.
+         */
         void *GetData(size_t type) const {
             std::lock_guard<std::mutex> guard(m_RWLock);
 
@@ -22,6 +30,12 @@ namespace balloon {
             return nullptr;
         }
 
+        /**
+         * @brief Sets the data of the specified type.
+         * @param data A pointer to the data to set.
+         * @param type The type of the data to set.
+         * @return A pointer to the previous data of the specified type, or nullptr if not found.
+         */
         void *SetData(void *data, size_t type) {
             std::lock_guard<std::mutex> guard(m_RWLock);
 
@@ -40,8 +54,8 @@ namespace balloon {
         }
 
     private:
-        mutable std::mutex m_RWLock;
-        std::vector<size_t> m_UserData;
+        mutable std::mutex m_RWLock; /**< A mutex for thread-safe access to the user data. */
+        std::vector<size_t> m_UserData; /**< The storage for user data. */
     };
 }
 

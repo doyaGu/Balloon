@@ -36,70 +36,106 @@ namespace balloon {
 
         class IDataStack {
         public:
+            /**
+             * @brief Increases the reference count of the object.
+             * @return The new reference count.
+             */
             virtual int AddRef() const = 0;
+
+            /**
+             * @brief Decreases the reference count of the object. Destroys the object if the reference count reaches zero.
+             * @return The new reference count.
+             */
             virtual int Release() const = 0;
+
+            /**
+             * @brief Gets the weak reference flag of the object.
+             * @return A pointer to the weak reference flag.
+             */
             virtual IWeakRefFlag *GetWeakRefFlag() const = 0;
 
+            /**
+             * @brief Clears the data stack.
+             */
             virtual void Clear() = 0;
 
+            /**
+             * @brief Checks if the data stack is empty.
+             * @return True if the data stack is empty, false otherwise.
+             */
             virtual bool Empty() const = 0;
+
+            /**
+             * @brief Gets the number of elements in the data stack.
+             * @return The number of elements.
+             */
             virtual size_t Size() const = 0;
 
+            /**
+             * @brief Gets the capacity of the data stack.
+             * @return The capacity of the data stack.
+             */
             virtual size_t Capacity() const = 0;
+
+            /**
+             * @brief Sets the minimum capacity of the data stack.
+             * @param cap The minimum capacity to reserve.
+             */
             virtual void Reserve(size_t cap) = 0;
+
+            /**
+             * @brief Reduces the capacity of the data stack to fit its current size.
+             */
             virtual void Shrink() = 0;
 
+            /**
+             * @brief Moves the cursor to the specified offset and returns the new cursor position.
+             * @param offset The offset to move the cursor.
+             * @return The new cursor position.
+             */
             virtual size_t CursorTo(int offset) const = 0;
+
+            /**
+             * @brief Gets the current cursor position.
+             * @return The current cursor position.
+             */
             virtual size_t GetCursor() const = 0;
+
+            /**
+             * @brief Sets the cursor position to the specified index.
+             * @param index The index to set the cursor position to.
+             * @return True if the cursor position was set successfully, false if the index is out of range.
+             */
             virtual bool SetCursor(size_t index) = 0;
 
+            /**
+             * @brief Pushes the current cursor position onto the stack.
+             */
             virtual void PushCursor() = 0;
+
+            /**
+             * @brief Pops the top cursor position from the stack and sets the cursor position to it.
+             */
             virtual void PopCursor() = 0;
 
+            /**
+             * @brief Pushes the element onto the stack.
+             */
             virtual void Push() = 0;
+
+            /**
+             * @brief Pops the top element from the stack.
+             */
             virtual void Pop() = 0;
 
+            /**
+              * @brief Gets the top element index.
+              * @return The top element index.
+              */
             size_t Top() const {
                 auto size = Size();
                 return size == 0 ? 0 : Size() - 1;
             }
-
-            uint8_t GetTag() const { return GetTag(Top()); }
-            uint8_t GetType() const { return GetType(Top()); }
-            uint8_t GetSubtype() const { return GetSubtype(Top()); }
-
-            size_t GetSize() const { return GetSize(Top()); }
-
-            bool GetBool() const { return GetBool(Top()); }
-            char GetChar() const { return GetChar(Top()); }
-            uint8_t GetUint8() const { return GetUint8(Top()); }
-            int8_t GetInt8() const { return GetInt8(Top()); }
-            uint16_t GetUint16() const { return GetUint16(Top()); }
-            int16_t GetInt16() const { return GetInt16(Top()); }
-            uint32_t GetUint32() const { return GetUint32(Top()); }
-            int32_t GetInt32() const { return GetInt32(Top()); }
-            uint64_t GetUint64() const { return GetUint64(Top()); }
-            int64_t GetInt64() const { return GetInt64(Top()); }
-            float GetFloat32() const { return GetFloat32(Top()); }
-            double GetFloat64() const { return GetFloat64(Top()); }
-            const char *GetString() const { return GetString(Top()); }
-            const void *GetBuffer(size_t *size) const { return GetBuffer(Top(), size); }
-            void *GetPtr() const { return GetPtr(Top()); }
-
-            void SetValue(bool value) { SetValue(Top(), value); }
-            void SetValue(char value) { SetValue(Top(), value); }
-            void SetValue(uint8_t value) { SetValue(Top(), value); }
-            void SetValue(int8_t value) { SetValue(Top(), value); }
-            void SetValue(uint16_t value) { SetValue(Top(), value); }
-            void SetValue(int16_t value) { SetValue(Top(), value); }
-            void SetValue(uint32_t value) { SetValue(Top(), value); }
-            void SetValue(int32_t value) { SetValue(Top(), value); }
-            void SetValue(uint64_t value) { SetValue(Top(), value); }
-            void SetValue(int64_t value) { SetValue(Top(), value); }
-            void SetValue(float value) { SetValue(Top(), value); }
-            void SetValue(double value) { SetValue(Top(), value); }
-            void SetValue(const void *buf, size_t size) { SetValue(Top(), buf, size); }
-            void SetValue(void *ptr) { SetValue(Top(), ptr); }
 
             virtual uint8_t GetTag(size_t index) const = 0;
             virtual uint8_t GetType(size_t index) const = 0;
@@ -137,6 +173,43 @@ namespace balloon {
             virtual void SetValue(size_t index, double value) = 0;
             virtual void SetValue(size_t index, const void *buf, size_t size) = 0;
             virtual void SetValue(size_t index, void *ptr) = 0;
+
+            uint8_t GetTag() const { return GetTag(Top()); }
+            uint8_t GetType() const { return GetType(Top()); }
+            uint8_t GetSubtype() const { return GetSubtype(Top()); }
+
+            size_t GetSize() const { return GetSize(Top()); }
+
+            bool GetBool() const { return GetBool(Top()); }
+            char GetChar() const { return GetChar(Top()); }
+            uint8_t GetUint8() const { return GetUint8(Top()); }
+            int8_t GetInt8() const { return GetInt8(Top()); }
+            uint16_t GetUint16() const { return GetUint16(Top()); }
+            int16_t GetInt16() const { return GetInt16(Top()); }
+            uint32_t GetUint32() const { return GetUint32(Top()); }
+            int32_t GetInt32() const { return GetInt32(Top()); }
+            uint64_t GetUint64() const { return GetUint64(Top()); }
+            int64_t GetInt64() const { return GetInt64(Top()); }
+            float GetFloat32() const { return GetFloat32(Top()); }
+            double GetFloat64() const { return GetFloat64(Top()); }
+            const char *GetString() const { return GetString(Top()); }
+            const void *GetBuffer(size_t *size) const { return GetBuffer(Top(), size); }
+            void *GetPtr() const { return GetPtr(Top()); }
+
+            void SetValue(bool value) { SetValue(Top(), value); }
+            void SetValue(char value) { SetValue(Top(), value); }
+            void SetValue(uint8_t value) { SetValue(Top(), value); }
+            void SetValue(int8_t value) { SetValue(Top(), value); }
+            void SetValue(uint16_t value) { SetValue(Top(), value); }
+            void SetValue(int16_t value) { SetValue(Top(), value); }
+            void SetValue(uint32_t value) { SetValue(Top(), value); }
+            void SetValue(int32_t value) { SetValue(Top(), value); }
+            void SetValue(uint64_t value) { SetValue(Top(), value); }
+            void SetValue(int64_t value) { SetValue(Top(), value); }
+            void SetValue(float value) { SetValue(Top(), value); }
+            void SetValue(double value) { SetValue(Top(), value); }
+            void SetValue(const void *buf, size_t size) { SetValue(Top(), buf, size); }
+            void SetValue(void *ptr) { SetValue(Top(), ptr); }
 
             virtual void Swap(size_t index1, size_t index2) = 0;
 
